@@ -1,0 +1,47 @@
+getgenv().options={
+    MaliciousNamecalls={ --Any namecall that can potentially harm the user
+        Enabled=true, --Monitors for such namecalls
+        ShowNamecall=true --Outputs the namecall method in the given options.Output form
+    },
+    ChatBan=true, --Prevents multiple chat vulnerabilities
+    PetSim={ --Pet Simulator X scam protection
+        Enabled=true, --Will monitor for scams
+        ShowUser=true, --Shows the user attempting to scam and their userID
+        Bank=true, --Monitors for bank-stealing attempts
+        Mail=true --Monitors for mail-scamming attempts
+    },    
+    MiningSim=true, --Prevents scams
+    AntiLog={ --Prevents information logging via webhooks
+        Enabled=true, --Will monitor for webhooks
+        ShowInfo=true, --Shows the logged info
+        ShowDestination=true, --Shows the webhook link
+        Payback=true --Will delete the webhook
+    },
+    AutoJoin={ --Prevents scripts that try to join you into a server
+        Enabled=true, --Will monitor for such force joining attempts
+        ShowServer=true --Shows the server invite link
+    },
+    BeeSwarm=true, --Prevents scams such as the basic bee scam
+    Require=true, --Prevents require detections (which are detections that can tell you're using an executor when requiring any module script) (more for less protected executors/scripts)
+    AntiKick=true, --Prevent kick attempts
+    BasicAntiCheatBypass=true, --Universally bypasses basic anti cheats that check for properties/distance
+    MemoryDetections=true, --Prevents a set of detections based on memory (which are very inaccurate in the first place and will result in false positives a lot of times)
+    GUIDetection=true, --Prevents a method to detect when you use a GUI
+    GroupBypass=true, --Bypasses any group requirement for group-locked scripts
+    AntiReport=true, --Somewhat a part of ChatBan, but for a method to report for any reason (even made up)
+    ClearTrace=true, -- Clears all executor traces used by certain anti hook scripts
+    Output=warn --Change to your prefered output option (print,warn,printconsole,rconsoleprint,rconsolewarn,etc)
+}
+getgenv().Guardian={
+    SetAll=function(a) --A function to set all options at once. a  - true/false
+        for i, v in next,options do
+        	if typeof(v)=="table" then
+            	for i2 in next,v do
+                	options[i][i2]=a
+            	end
+        	else
+				options[i]=a
+    		end
+		end
+    end
+}
