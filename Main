@@ -5,7 +5,10 @@ getgenv().options={
         Enabled=true,
         ShowNamecall=true
     },
-    ChatBan=true,
+    ChatBan={
+        Enabled=true,
+        Slash=true
+    },
     PetSim={
         Enabled=true,
         ShowUser=true,
@@ -30,7 +33,6 @@ getgenv().options={
     MemoryDetections=true,
     GUIDetection=true,
     GroupBypass=true,
-    AntiReport=true,
     ClearTrace=true,
     Output=warn --Change to your prefered output option (print,warn,printconsole,rconsoleprint,rconsolewarn,etc)
 }
@@ -117,6 +119,9 @@ local namecall={
     },
     ["RbxAnalyticsService"]={
         ["GetClientId"]=1
+    },
+    ["Players"]={
+        ["ReportAbuse"]=1
     }
 }
 if cloneref(game):GetService("VideoCaptureService") then
@@ -124,31 +129,31 @@ if cloneref(game):GetService("VideoCaptureService") then
         ["GetCameraDevices"]=1
     }
 end
+
 local old1,old2,old3,old4,old5,old8,old9,old10,old11,old12,old13,old14,old15
 if hookfunction then
 	old5=hookfunction(getrenv().gcinfo,function(...)
 		return options.MemoryDetections and rd(1500,2500) or old5(...)
 	end)
-	old11=hookfunction(Players.ReportAbuse,function(...)
-		if options.AntiReport then
-			options.Output("Player report was attempted. Attempt denied")
-			return error("Ha ha")
-		end
-		return old11(...)
-	end)
 	if not is_sirhurt_closure then
 		for i,v in next,namecall do
 			for i2,v2 in next,v do
 				local old7
-				old7=hookfunction(i=="DataModel" and game[i2] or game[i][i2],function(...) return not options.MaliciousNamecalls and old7(...) or options.Output(("Malicious function%s attempted execution. Attempt denied."):format(options.MaliciousNamecalls.ShowNamecall and "game"..i2 or "")) end)
+				old7=hookfunction(i=="DataModel" and game[i2] or game[i][i2],function(...)
+				    if options.MaliciousNamecalls.Enabled then
+                        options.Output(("Malicious function%s attempted execution. Attempt denied."):format(options.MaliciousNamecalls.ShowNamecall and " game."..(i~="DataModeL"and i.."."..i2) or i2 or "")) 
+                        return not checkcaller() and old7(...)or nil
+                    end
+                    return old7(...)
+				end)
 			end
 		end
 	end
 	old13=hookfunction(Instance.new("BindableEvent").Fire,function(...)
-		return not options.ChatBan and old13(...) or self==MessagePostedEvent and options.Output("MessagePosted usage was attempted. Attempt denied.") or old13(...)
+		return not options.ChatBan.Enabled and old13(...) or self==MessagePostedEvent and options.Output("MessagePosted usage was attempted. Attempt denied.") or old13(...)
 	end)
 	old12=hookfunction(ChatBar.CaptureFocus,function(...)
-		if options.ChatBan then
+		if options.ChatBan.Enabled and options.ChatBan.Slash then
 			options.Output("Chat focus capture as local player was attempted. Attempt denied.")
 			if getcallingscript()~=ChatScript then
 				if not rawget(getgenv(),"c") then
@@ -194,7 +199,7 @@ if hookfunction then
 	end)
 	local oldd,oldd2
 	oldd=hookfunction(Instance.new("RemoteEvent").FireServer,newcclosure(function(self,...)
-		if options.ChatBan and self==SayMessageRequest and getcallingscript()~=ChatMain then
+		if options.ChatBan.Enabled and self==SayMessageRequest and getcallingscript()~=ChatMain then
 			return options.Output("SayMessageRequest remote event attempted to fire. Attempt denied.")
 		end
 		if checkcaller() then
@@ -210,12 +215,14 @@ if hookfunction then
     	    if options.PetSim.Enabled and checkcaller() then
     	        local args={...}
                 if self=="Invite To Bank" and options.PetSim.Bank then
+                    for i,v in next,args do print(i,v)end
         			task.spawn(function()
         				options.Output(("Script attempted to give user%saccess to your bank. Attempt denied."):format(options.PetSim.ShowUser and " named ".. Players:GetNameFromUserIdAsync(args[2]).." (ID: "..args[2]..") " or " "))
         			end)
         			return
                 end
                 if self=="Send Mail" and options.PetSim.Mail then
+                    for i,v in next,args do print(i,v)end
                     task.spawn(function()
                         options.Output(("Script attempted to send mail to a user%s. Attempt denied."):format(options.PetSim.ShowUser and " named ".. args[1]["Recipient"].." (ID: "..Players:GetUserIdFromNameAsync(args[1]["Recipient"])..") " or ""))
                     end)
@@ -266,10 +273,9 @@ if hookfunction then
 			end)
 		end
 	end
-	old3=hookfunction(getrenv().debug.info,function(...)
-		local args={...}
-		return options.Require and (args[1]==2 and args[2]=="s" and getcallingscript()) or old3(...)
-	end)
+	--[[old3=hookfunction(getrenv().debug.info,function(self,params,...)
+		return options.Require and (self==2 and type(params)=="string" and old3(4,params,...)) or old3(...)
+	end)]]
 	--old4=hookmetamethod(Vector3.new(),"__index",newcclosure(function(self,b,...)
 	--    return options.BasicAntiCheatBypass and not table.find({LocalPlayer.PlayerScripts.PlayerModule.ControlModule,LocalPlayer.PlayerScripts.RbxCharacterSounds},getcallingscript()) and b:lower()=="magnitude" and (old4(self,b,...)<=savedProps.WalkSpeed and old4(self,b,...) or rd(0,savedProps.WalkSpeed)) or old4(self,b,...)
 	--end),false)
@@ -286,11 +292,11 @@ if hookmetamethod then
 	old1=hookmetamethod(game,"__namecall",newcclosure(function(self,...)
 		local args={...}
 		local method=string.upper(string.sub(getnamecallmethod(),1,1))..string.sub(getnamecallmethod(),2,#getnamecallmethod())
-		if options.ChatBan then
+		if options.ChatBan.Enabled then
 			if method=="FireServer" and self==SayMessageRequest and getcallingscript()~=ChatMain then
 				options.Output("SayMessageRequest remote event attempted to fire. Attempt denied.")
 				return
-			elseif method=="CaptureFocus" and self==ChatBar then
+			elseif method=="CaptureFocus" and self==ChatBar and options.ChatBan.Slash then
 				options.Output("Chat focus capture as local player was attempted. Attempt denied.")
 				if getcallingscript()~=ChatScript then
 					if not getgenv().a then
@@ -324,30 +330,26 @@ if hookmetamethod then
 				return
 			end
 		end
-		if options.AntiReport and method=="ReportAbuse" and self==Players then
-			options.Output("Player report was attempted. Attempt denied.")
-			return error("Ha ha")
-		end
 		if namecall[self.ClassName] and 
 		namecall[self.ClassName][method] and options.MaliciousNamecalls.Enabled
 		then
-			options.Output(("Malicious namecall%s attempted execution. Attempt denied."):format(options.MaliciousNamecalls.ShowNamecall and " "..self.GetFullName(self)..":"..method or ""))
-			return error("Get owned")
+			options.Output(("Malicious namecall%s attempted execution. Attempt denied."):format(options.MaliciousNamecalls.ShowNamecall and " game."..self.GetFullName(self)..":"..method or ""))
+			return not checkcaller() and old1(...)or nil
 		end
 		--[[if not checkcaller() and method=="DistanceFromCharacter" and self==LocalPlayer and typeof(args[1])=="Vector3" and options.BasicAntiCheatBypass then
 			return old1(self,...)<savedProps.WalkSpeed and old1(self,...) or rd(0,savedProps.WalkSpeed)
 		end]]
-		if options.AntiKick and self==LocalPlayer and method=="Kick" then
+		if self==LocalPlayer and method=="Kick" and options.AntiKick then
 			options.Output("Attempt to kick player denied.")
 			return
 		end
-		if options.MemoryDetections and self==Stats and method=="GetTotalMemoryUsageMb" then
+		if self==Stats and method=="GetTotalMemoryUsageMb" and options.MemoryDetections then
 			return rd(400,550)
 		end
-		if options.GUIDetection and self==Content and method=="PreloadAsync" and typeof(args[1])=="table" then
+		if self==Content and method=="PreloadAsync" and typeof(args[1])=="table"and  options.GUIDetection then
 			return
 		end
-		if options.GroupBypass and self==LocalPlayer and method=="IsInGroup" and typeof(args[1])=="number" and args[1]>0 then
+		if self==LocalPlayer and method=="IsInGroup" and typeof(args[1])=="number" and args[1]>0 and options.GroupBypass then
 			return true
 		end
 		if checkcaller() then
@@ -385,10 +387,32 @@ if hookmetamethod then
 		end))
 	end
 end
+if is_sirhurt_closure then
+    local namecallSirhurt=(function()
+        local actual={}
+        for i,v in next,namecall do
+            for i2,v2 in next,v do
+                table.insert(actual,i.."."..i2)
+            end
+        end
+        return actual
+    end)()
+    for i,v in next, namecallSirhurt do
+        local oldSir
+        oldSir=hookfunction(v:split(".")[1]=="DataModel" and game[v:split(".")[2]] or game[v:split(".")[1]][v:split(".")[2]],function(...)
+            if options.MaliciousNamecalls.Enabled then
+                options.Output(("Malicious function%s attempted execution. Attempt denied."):format(options.MaliciousNamecalls.ShowNamecall and " game."..(i~="DataModeL"and i.."."..i2) or i2 or "")) 
+                return not checkcaller() and oldSir(...)or nil
+            end
+            return oldSir(...)
+        end)
+    end
+    
+end
 
 task.spawn(function()
     while task.wait() do
-        ChatBar.Text=options.ChatBan 
+        ChatBar.Text=options.ChatBan.Enabled 
         and (not ChatBar:IsFocused() 
         and ChatBar.Text~="" and "") or ChatBar.Text
     end
