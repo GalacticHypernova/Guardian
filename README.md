@@ -9,4 +9,6 @@ Q: Is Guardian safe?
 A: Nothing is truly 100% safe as there will always be flaws, however Guardian is regularly undergoing detection patches/bug fixes to ensure the best performance and quality.
 
 To use the script, simply copy the following:
+```lua
 loadstring(game:HttpGet("https://raw.githubusercontent.com/GalacticHypernova/Guardian/main/Main"))()
+```
