@@ -427,3 +427,18 @@ if options.ClearTrace then
         end
     end
 end
+if options.Error then
+    for i,v in next,getconnections(game:GetService("ScriptContext").Error) do
+	v:Disable()
+    end
+end
+if options.Message then
+    for i,v in next,getconnections(game:GetService("LogService").MessageOut) do
+	v:Disable()
+    end
+end
+if options.AntiIdle then
+    for i,v in next,getconnections(LocalPlayer.Idled) do
+	v:Disable()
+    end
+end
