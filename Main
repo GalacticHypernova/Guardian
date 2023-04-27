@@ -70,9 +70,6 @@ end
 if not getproperties then
     task.spawn(function()error("Your executor does not support getproperties, so the basic anti cheat bypass sadly won't work for you. However, everything else should.")end)
 end
-if is_sirhurt_closure then
-    task.spawn(function()error("Thanks to your lovely executor's developers, malicious namecall functions protection will not work because they were that great at coding it.")end)
-end
 local hrequest,execlosure=
 {
     (typeof(syn)=='table'and syn.request),
