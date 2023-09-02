@@ -7,7 +7,8 @@ getgenv().options={
     },
     ChatBan={
         Enabled=true,
-        Slash=true
+        Slash=true,
+	NewChat=true
     },
     PetSim={
         Enabled=true,
@@ -130,7 +131,7 @@ if cloneref(game):GetService("VideoCaptureService") then
     }
 end
 
-local old1,old2,old3,old4,old5,old8,old9,old10,old11,old12,old13,old14,old15
+local old1,old2,old3,old4,old5,old8,old9,old10,old11,old12,old13,old14,old15,old16
 if hookfunction then
 	old5=hookfunction(getrenv().gcinfo,function(...)
 		return options.MemoryDetections and rd(1500,2500) or old5(...)
@@ -273,6 +274,13 @@ if hookfunction then
 			end)
 		end
 	end
+	old16=hookfunction(Instance.new("TextChannel").SendAsync,newcclosure(function(self,...) 
+		if options.ChatBan.NewChat then
+			options.Output("New chat system message request attempted to fire. Attempt denied.")
+			return
+		end
+		return old16(self,...)
+	end))
 	--[[old3=hookfunction(getrenv().debug.info,function(self,params,...)
 		return options.Require and (self==2 and type(params)=="string" and old3(4,params,...)) or old3(...)
 	end)]]
@@ -295,6 +303,9 @@ if hookmetamethod then
 		if options.ChatBan.Enabled then
 			if method=="FireServer" and self==SayMessageRequest and getcallingscript()~=ChatMain then
 				options.Output("SayMessageRequest remote event attempted to fire. Attempt denied.")
+				return
+			elseif method=="SendAsync" and self.ClassName=="TextChannel" and options.ChatBan.NewChat then
+				options.Output("New chat system message request attempted to fire. Attempt denied.")
 				return
 			elseif method=="CaptureFocus" and self==ChatBar and options.ChatBan.Slash then
 				options.Output("Chat focus capture as local player was attempted. Attempt denied.")
