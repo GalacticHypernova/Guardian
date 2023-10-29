@@ -9,6 +9,13 @@ Q: Is Guardian V2 safe? Does it actually protect me?
 A: Guardian is fully open source, and is completely safe. Those who want can just take a look at the source. However, nothing is truly 100% protective as there will always be flaws, but Guardian V2 is regularly undergoing detection patches/bug fixes to ensure the best performance and quality.
 
 To use the script, simply copy the following:
+
+Development branch
 ```lua
 loadstring(game:HttpGet("https://raw.githubusercontent.com/GalacticHypernova/Guardian/main/Main"))()
+```
+
+Production branch:
+```lua
+loadstring(game:HttpGet("https://raw.githubusercontent.com/GalacticHypernova/Guardian/main/MainProd"))()
 ```
