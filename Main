@@ -422,13 +422,6 @@ if is_sirhurt_closure then
     
 end
 
-task.spawn(function()
-    while task.wait() do
-        ChatBar.Text=options.ChatBan.Enabled 
-        and (not ChatBar:IsFocused() 
-        and ChatBar.Text~="" and "") or ChatBar.Text
-    end
-end)
 if options.ClearTrace then
     for i,v in next,getgc()do
         if typeof(v)=="function" and execlosure(v) then
