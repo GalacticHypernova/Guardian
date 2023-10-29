@@ -103,7 +103,11 @@ local namecall={
     ["MarketplaceService"]={
         ["PerformPurchase"]=1,
         ["GetRobuxBalance"]=2,
-	["PromptGamePassPurchase"]=3
+	["PromptGamePassPurchase"]=3,
+	["PromptPurchase"]=4,
+	["PromptBundlePurchase"]=5,
+	["PromptProductPurchase"]=6,
+	["PromptSubscriptionPurchase"]=7
     },
     ["MessageBusService"]={
         ["Publish"]=1,
