@@ -1,5 +1,4 @@
 if not game:IsLoaded() then game.Loaded:Wait() end
-if getgenv().Guardian then return end
 local options={
     MaliciousNamecalls={
         Enabled=true,
@@ -80,7 +79,7 @@ local hrequest,execlosure=
     http_request~=request and http_request, 
     HttpPost
 },is_synapse_function or isexecutorclosure or iskrnlclosure or issentinelclosure or is_protosmasher_closure or is_sirhurt_closure or iselectronfunction or checkclosure
-getgenv().savedProps={}
+local savedProps={}
 local Players=game:GetService("Players")
 local LocalPlayer=Players.LocalPlayer
 local Char=(LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait())
@@ -131,7 +130,7 @@ if cloneref(game):GetService("VideoCaptureService") then
         ["GetCameraDevices"]=1
     }
 end
-
+local c
 local old1,old2,old3,old4,old5,old8,old9,old10,old11,old12,old13,old14,old15,old16
 if hookfunction then
 	old5=hookfunction(getrenv().gcinfo,function(...)
@@ -158,7 +157,7 @@ if hookfunction then
 		if options.ChatBan.Enabled and options.ChatBan.Slash then
 			options.Output("Chat focus capture as local player was attempted. Attempt denied.")
 			if getcallingscript()~=ChatScript then
-				if not rawget(getgenv(),"c") then
+				if not c then
 					StarterGui:SetCore("SendNotification",{
 						Title="WARNING!",
 						Text="There is an attempt to force you to chat in game."..getcallingscript():GetFullName(),
@@ -180,7 +179,7 @@ if hookfunction then
 							Duration=15
 						})
 					end
-					rawset(getgenv(),"c","e")
+					c="e"
 				end
 			end
 			return
@@ -297,6 +296,7 @@ if hookfunction then
 		return not checkcaller() and (options.BasicAntiCheatBypass and (args[1]==LocalPlayer and typeof(args[2])=="Vector3" and (old15(...)<savedProps.WalkSpeed and old15(...) or rd(0,savedProps.WalkSpeed)))) or old15(...)
 	end)]]
 end
+local a
 if hookmetamethod then
 	old1=hookmetamethod(game,"__namecall",newcclosure(function(self,...)
 		local args={...}
@@ -311,7 +311,7 @@ if hookmetamethod then
 			elseif method=="CaptureFocus" and self==ChatBar and options.ChatBan.Slash then
 				options.Output("Chat focus capture as local player was attempted. Attempt denied.")
 				if getcallingscript()~=ChatScript then
-					if not getgenv().a then
+					if not a then
 						StarterGui.SetCore(StarterGui,"SendNotification",{
 							Title="WARNING!",
 							Text="There is an attempt to force you to chat in game."..getcallingscript().GetFullName(getcallingscript()),
@@ -333,7 +333,7 @@ if hookmetamethod then
 								Duration=15
 							})
 						end
-						getgenv().a="e"
+						a="e"
 					end
 				end
 				return
