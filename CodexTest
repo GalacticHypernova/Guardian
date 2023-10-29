@@ -59,7 +59,7 @@ game:GetService("StarterGui"):SetCore("SendNotification",{
     Duration=8
 })
 game:GetService("StarterGui"):SetCore("SendNotification",{
-    Title="By Hypernova#0721",
+    Title="By galactichypernova",
     Text="With love <3",
     Button1="<3",
     Duration=8
