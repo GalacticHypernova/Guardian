@@ -37,7 +37,7 @@ local options={
     Error=true,
     Message=true,
     AntiIdle=true,
-    Output=warn --Change to your prefered output option (print,warn,printconsole,rconsoleprint,rconsolewarn,etc)
+    Output=rconsolewarn --Change to your prefered output option (print,warn,printconsole,rconsoleprint,rconsolewarn,etc)
 }
 local Guardian={
     SetAll=function(a)
