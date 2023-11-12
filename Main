@@ -101,13 +101,14 @@ local namecall={
         ["ExecuteJavaScript"]=2
     },
     ["MarketplaceService"]={
-        ["PerformPurchase"]=1,
-        ["GetRobuxBalance"]=2,
-	["PromptGamePassPurchase"]=3,
-	["PromptPurchase"]=4,
-	["PromptBundlePurchase"]=5,
-	["PromptProductPurchase"]=6,
-	["PromptSubscriptionPurchase"]=7
+        ["PerformPurchase"]=nil,
+	["PerformPurchaseV2"]=nil,
+        ["GetRobuxBalance"]=0,
+	["PromptGamePassPurchase"]=nil,
+	["PromptPurchase"]=nil,
+	["PromptBundlePurchase"]=nil,
+	["PromptProductPurchase"]=nil,
+	["PromptSubscriptionPurchase"]=nil
     },
     ["MessageBusService"]={
         ["Publish"]=1,
