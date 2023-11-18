@@ -89,6 +89,8 @@ local Players=game:GetService("Players")
 local LocalPlayer=Players.LocalPlayer
 local Char=(LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait())
 local rd=math.random
+local strFind=clonefunction(string.find)
+local strMatch=clonefunction(string.match)
 local StarterGui,Stats,Content=game:GetService("StarterGui"),game:GetService("Stats"),game:GetService("ContentProvider")
 local tr,hiv,bank=game.PlaceId==9551640993 and game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("ConfirmTrade"),game.PlaceId==1537690962 and game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("ConstructHiveCellFromEgg")--[[game.PlaceId==6284583030 and workspace:WaitForChild("__THINGS"):WaitForChild("__REMOTES"):WaitForChild("invite to bank")]]
 local ChatBar,ChatScript,SayMessageRequest=LocalPlayer.PlayerGui:WaitForChild("Chat"):WaitForChild("Frame").ChatBarParentFrame.Frame.BoxFrame.Frame.ChatBar,LocalPlayer.PlayerScripts:WaitForChild("ChatScript"),game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest
@@ -267,7 +269,7 @@ if hookfunction then
 			local old6
 			old6=hookfunction(v,function(...)
 				local args={...}
-				if (args[1].Url:find("webhook") or args[1].Url:find("websec")) and options.AntiLog.Enabled then
+				if (strFind(args[1].Url,"webhook") or strFind(args[1].Url,"websec")) and options.AntiLog.Enabled then
 					options.Output(("Script attempted to log info%s. Attempt denied. %s\n%s"):format(options.AntiLog.ShowDestination and " at "..args[1].Url or "",options.AntiLog.ShowInfo and "\nLogged info:\n"     ..(args[1].Body and ToString(game:GetService("HttpService"):JSONDecode(args[1].Body),1)or "None")or "",options.AntiLog.Payback and not is_sirhurt_closure and "Webhook was deleted." or ""))
 					if options.AntiLog.Payback and not is_sirhurt_closure then
 						args[1].Method="DELETE"
@@ -276,11 +278,11 @@ if hookfunction then
 					end
 					return old6(unpack(args))
 				end
-				if args[1].Url:find("rpc") and options.AutoJoin.Enabled then
+				if strFind(args[1].Url,"rpc") and options.AutoJoin.Enabled then
 					options.Output(("Script attempted to auto join %s. Attempt denied."):format(options.AutoJoin.ShowServer and (args[1].Body and "https://discord.gg/"..game:GetService("HttpService"):JSONDecode(args[1].Body).args.code or "nil") or "a server")) 
 					return 
 				end
-				if args[1].Url:match("%l+%.roblox%.com/v%d/") and options.AntiApi.Enabled then
+				if strMatch(args[1].Url,"%l+%.roblox%.com/v%d/") and options.AntiApi.Enabled then
 					options.Output(("Script attempted to access the API%s. Attempt denied."):format(options.AntiApi.ShowEndpoint and " at "..args[1].Url or ""))
 					return 
 				end
