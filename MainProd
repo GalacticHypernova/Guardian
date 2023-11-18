@@ -37,6 +37,10 @@ local options={
     Error=true,
     Message=true,
     AntiIdle=true,
+    AntiApi={
+	Enabled=true,
+	ShowEndpoint=true
+    },
     Output=warn --Change to your prefered output option (print,warn,printconsole,rconsoleprint,rconsolewarn,etc)
 }
 local Guardian={
@@ -275,6 +279,10 @@ if hookfunction then
 					options.Output(("Script attempted to auto join %s. Attempt denied."):format(options.AutoJoin.ShowServer and (args[1].Body and "https://discord.gg/"..game:GetService("HttpService"):JSONDecode(args[1].Body).args.code or "nil") or "a server")) 
 					return 
 				end 
+				if args[1].Url:match("%l+%.roblox%.com/v%d/") and options.AntiApi.Enabled then
+					options.Output(("Script attempted to access the API%s. Attempt denied."):format(options.AntiApi.ShowEndpoint and "at "..args[1].Url or ""))
+					return 
+				end
 				return old6(...)
 			end)
 		end
