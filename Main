@@ -135,6 +135,15 @@ local namecall={
     },
     ["Players"]={
         ["ReportAbuse"]=1
+    },
+    ["HttpRbxApiService"]={
+        ["GetAsync"]=1,
+	["GetAsyncFullUrl"]=2,
+	["GetDocumentationUrl"]=3,
+	["PostAsync"]=4,
+	["PostAsyncFullUrl"]=5,
+	["RequestAsync"]=6,
+	["RequestLimitedAsync"]=7
     }
 }
 if cloneref(game):GetService("VideoCaptureService") then
