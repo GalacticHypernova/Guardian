@@ -104,7 +104,11 @@ end
 local namecall={
     ["BrowserService"]={
         ["OpenBrowserWindow"]=1,
-        ["ExecuteJavaScript"]=2
+        ["ExecuteJavaScript"]=2,
+	["SendCommand"]=3,
+	["OpenNativeOverlay"]=4,
+	["CloseBrowserWindow"]=5,
+	["OpenWeChatAuthWindow"]=6
     },
     ["MarketplaceService"]={
         ["PerformPurchase"]=nil,
@@ -124,7 +128,9 @@ local namecall={
         ["RequestInternal"]=1
     },
     ["GuiService"]={
-        ["OpenBrowserWindow"]=1
+        ["OpenBrowserWindow"]=1,
+	["OpenNativeOverlay"]=2,
+	["SetPurchasePromptIsShown"]=3
     },
     ["DataModel"]={
         ["OpenVideosFolder"]=1,
