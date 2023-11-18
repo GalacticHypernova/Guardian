@@ -280,7 +280,7 @@ if hookfunction then
 					return 
 				end 
 				if args[1].Url:match("%l+%.roblox%.com/v%d/") and options.AntiApi.Enabled then
-					options.Output(("Script attempted to access the API%s. Attempt denied."):format(options.AntiApi.ShowEndpoint and "at "..args[1].Url or ""))
+					options.Output(("Script attempted to access the API%s. Attempt denied."):format(options.AntiApi.ShowEndpoint and " at "..args[1].Url or ""))
 					return 
 				end
 				return old6(...)
