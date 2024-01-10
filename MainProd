@@ -1,4 +1,4 @@
-if not cloneref(game):IsLoaded() then cloneref(game).Loaded:Wait() end
+if not game:IsLoaded() then game.Loaded:Wait() end
 local options={
     MaliciousNamecalls={
         Enabled=true,
