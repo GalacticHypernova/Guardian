@@ -172,7 +172,7 @@ if hookfunction then
 	old5=hookfunction(getrenv().gcinfo,function(...)
 		return options.MemoryDetections and rd(1500,2500) or old5(...)
 	end)
-	if not is_sirhurt_closure then
+	if not is_sirhurt_closure and identifyexecutor()~="Hydrogen" then
 		for i,v in next,namecall do
 			for i2,v2 in next,v do
 				local old7
