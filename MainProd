@@ -110,7 +110,6 @@ if cGame:GetService("TextChatService").ChatVersion == Enum.ChatVersion.LegacyCha
 else
 	ChatScript = cGame.CoreGui.RobloxGui.Modules.Server.ClientChat.ChatScript
 end
-local 
 local namecall={
     ["BrowserService"]={
         ["OpenBrowserWindow"]=1,
