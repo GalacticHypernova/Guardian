@@ -245,7 +245,7 @@ if hookfunction then
 		end
 		return oldd(self,...)
 	end))
-	if game.GameId==2316994223 then
+	if cGame.GameId==2316994223 then
     	local oldPet
     	oldPet=hookfunction(require(cGame:GetService("ReplicatedStorage").Library.Client.Network).Invoke,function(self,...)
     	    if options.PetSim.Enabled and checkcaller() then
