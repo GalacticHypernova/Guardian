@@ -92,7 +92,12 @@ local strFind=clonefunction(string.find)
 local strMatch=clonefunction(string.match)
 local StarterGui,Stats,Content=game:GetService("StarterGui"),game:GetService("Stats"),game:GetService("ContentProvider")
 local tr,hiv,bank=game.PlaceId==9551640993 and game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("ConfirmTrade"),game.PlaceId==1537690962 and game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("ConstructHiveCellFromEgg")--[[game.PlaceId==6284583030 and workspace:WaitForChild("__THINGS"):WaitForChild("__REMOTES"):WaitForChild("invite to bank")]]
-local ChatBar,ChatScript,SayMessageRequest=LocalPlayer.PlayerGui:WaitForChild("Chat"):WaitForChild("Frame").ChatBarParentFrame.Frame.BoxFrame.Frame.ChatBar,LocalPlayer.PlayerScripts:WaitForChild("ChatScript"),game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest
+local ChatBar,ChatScript,SayMessageRequest
+if game:GetService("TextChatService").ChatVersion == Enum.ChatVersion.LegacyChatService then
+    ChatBar = LocalPlayer.PlayerGui:WaitForChild("Chat"):WaitForChild("Frame").ChatBarParentFrame.Frame.BoxFrame.Frame.ChatBar
+end
+ChatScript = LocalPlayer.PlayerScripts:WaitForChild("ChatScript")
+SayMessageRequest = game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequestlocal ChatMain=ChatScript:WaitForChild("ChatMain")
 local ChatMain=ChatScript:WaitForChild("ChatMain")
 local MessagePostedEvent
 for _, Event in next, debug.getupvalues(require(ChatMain).MessagePosted.fire) do
