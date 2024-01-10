@@ -97,7 +97,7 @@ if game:GetService("TextChatService").ChatVersion == Enum.ChatVersion.LegacyChat
     ChatBar = LocalPlayer.PlayerGui:WaitForChild("Chat"):WaitForChild("Frame").ChatBarParentFrame.Frame.BoxFrame.Frame.ChatBar
 end
 ChatScript = LocalPlayer.PlayerScripts:WaitForChild("ChatScript")
-SayMessageRequest = game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequestlocal ChatMain=ChatScript:WaitForChild("ChatMain")
+SayMessageRequest = game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest
 local ChatMain=ChatScript:WaitForChild("ChatMain")
 local MessagePostedEvent
 for _, Event in next, debug.getupvalues(require(ChatMain).MessagePosted.fire) do
