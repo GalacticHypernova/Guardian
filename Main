@@ -175,7 +175,7 @@ if hookfunction then
 		for i,v in next,namecall do
 			for i2,v2 in next,v do
 				local old7
-				old7=hookfunction(i=="DataModel" and game[i2] or game[i][i2],function(...)
+				old7=hookfunction(i=="DataModel" and cGame[i2] or cGame[i][i2],function(...)
 				    if options.MaliciousNamecalls.Enabled then
                         options.Output(("Malicious function%s attempted execution. Attempt denied."):format(options.MaliciousNamecalls.ShowNamecall and " game."..(i~="DataModeL"and i.."."..i2) or i2 or "")) 
                         return not checkcaller() and old7(...)or nil
