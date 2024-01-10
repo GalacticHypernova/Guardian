@@ -172,7 +172,8 @@ if hookfunction then
 	old5=hookfunction(getrenv().gcinfo,function(...)
 		return options.MemoryDetections and rd(1500,2500) or old5(...)
 	end)
-	if not is_sirhurt_closure then
+	local exec=identifyexecutor()
+	if not is_sirhurt_closure and not table.find({"Hydrogen","Delta","Arceus","Codex"},exec) then
 		for i,v in next,namecall do
 			for i2,v2 in next,v do
 				local old7
@@ -189,39 +190,41 @@ if hookfunction then
 	old13=hookfunction(Instance.new("BindableEvent").Fire,function(...)
 		return not options.ChatBan.Enabled and old13(...) or self==MessagePostedEvent and options.Output("MessagePosted usage was attempted. Attempt denied.") or old13(...)
 	end)
-	old12=hookfunction(ChatBar.CaptureFocus,function(...)
-		if options.ChatBan.Enabled and options.ChatBan.Slash then
-			options.Output("Chat focus capture as local player was attempted. Attempt denied.")
-			if getcallingscript()~=ChatScript then
-				if not c then
-					StarterGui:SetCore("SendNotification",{
-						Title="WARNING!",
-						Text="There is an attempt to force you to chat in game."..getcallingscript():GetFullName(),
-						Button1="Okay!",
-						Duration=15
-					})
-					StarterGui:SetCore("SendNotification",{
-						Title="What to do",
-						Text="If it is due to a script, rejoin and do not execute it again. Otherwise, go there (through dex) and disable/delete it.",
-						Button1="Okay!",
-						Duration=15
-					})
-					if getcallingscript() then
-					setclipboard(getcallingscript():GetFullName())
+	if ChatBar then
+		old12=hookfunction(ChatBar.CaptureFocus,function(...)
+			if options.ChatBan.Enabled and options.ChatBan.Slash then
+				options.Output("Chat focus capture as local player was attempted. Attempt denied.")
+				if getcallingscript()~=ChatScript then
+					if not c then
 						StarterGui:SetCore("SendNotification",{
-							Title="Copied to clipboard",
-							Text="The path has also been copied to clipboard so you won't lose it in case this warning is gone too fast.",
+							Title="WARNING!",
+							Text="There is an attempt to force you to chat in game."..getcallingscript():GetFullName(),
 							Button1="Okay!",
 							Duration=15
 						})
+						StarterGui:SetCore("SendNotification",{
+							Title="What to do",
+							Text="If it is due to a script, rejoin and do not execute it again. Otherwise, go there (through dex) and disable/delete it.",
+							Button1="Okay!",
+							Duration=15
+						})
+						if getcallingscript() then
+						setclipboard(getcallingscript():GetFullName())
+							StarterGui:SetCore("SendNotification",{
+								Title="Copied to clipboard",
+								Text="The path has also been copied to clipboard so you won't lose it in case this warning is gone too fast.",
+								Button1="Okay!",
+								Duration=15
+							})
+						end
+						c="e"
 					end
-					c="e"
 				end
+				return
 			end
-			return
-		end
-		return old12(...)
-	end)
+			return old12(...)
+		end)
+	end
 	old8=hookfunction(Content.PreloadAsync,function(...)
 		local args={...}
 		return options.GUIDetection and (args[1]==Content and typeof(args[2])=="table" and options.Output("GUI detection attempted. Attempt denied.")) or old8(...) 
