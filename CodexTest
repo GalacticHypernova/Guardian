@@ -159,7 +159,7 @@ local namecall={
 	["RequestLimitedAsync"]=7
     }
 }
-if cloneref(game):GetService("VideoCaptureService") then
+if cGame:GetService("VideoCaptureService") then
     namecall["VideoCaptureService"]={
         ["GetCameraDevices"]=1
     }
@@ -228,7 +228,7 @@ if hookfunction then
 		local args={...}
 		return options.MemoryDetections and (args[1]==Stats and rd(400,550)) or old9(...)
 	end)
-	old10=hookfunction(game.Players.LocalPlayer.Kick,function(...)
+	old10=hookfunction(cGame.Players.LocalPlayer.Kick,function(...)
 		local args={...}
 		return options.AntiKick and (args[1]==LocalPlayer and options.Output("Attempt to kick player denied.")) or old10(...) 
 	end)
