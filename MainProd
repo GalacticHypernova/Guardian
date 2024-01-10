@@ -418,7 +418,7 @@ if hookmetamethod then
 			elseif cGame.PlaceId==1537690962 and options.BeeSwarm and self==hiv and method=="InvokeServer" then
 				options.Output("Script attempted to place a basic bee egg, potentially a fake dupe. Attempt denied.")
 				return
-			elseif cGame.PlaceId==8737899170 and options.PetSim99 and self==bank99 amd method=="InvokeServer" then
+			elseif cGame.PlaceId==8737899170 and options.PetSim99 and self==bank99 and method=="InvokeServer" then
 				options.Output("Script attempted to access the bank. Attempt denied.")
 				return
 			end
