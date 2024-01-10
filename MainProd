@@ -1,4 +1,4 @@
-if not cloneref(game):IsLoaded() then game.Loaded:Wait() end
+if not cloneref(game):IsLoaded() then cloneref(game).Loaded:Wait() end
 local options={
     MaliciousNamecalls={
         Enabled=true,
@@ -228,7 +228,7 @@ if hookfunction then
 		local args={...}
 		return options.MemoryDetections and (args[1]==Stats and rd(400,550)) or old9(...)
 	end)
-	old10=hookfunction(game.Players.LocalPlayer.Kick,function(...)
+	old10=hookfunction(cGame.Players.LocalPlayer.Kick,function(...)
 		local args={...}
 		return options.AntiKick and (args[1]==LocalPlayer and options.Output("Attempt to kick player denied.")) or old10(...) 
 	end)
@@ -238,13 +238,13 @@ if hookfunction then
 			return options.Output("SayMessageRequest remote event attempted to fire. Attempt denied.")
 		end
 		if checkcaller() then
-			if game.PlaceId==9551640993 and options.MiningSim and self==tr then
+			if cGame.PlaceId==9551640993 and options.MiningSim and self==tr then
 				return options.Output("Script attempted to confirm a potentially rigged/scam trade. Attempt denied.")
 			end
 		end
 		return oldd(self,...)
 	end))
-	if game.GameId==2316994223 then
+	if cGame.GameId==2316994223 then
     	local oldPet
     	oldPet=hookfunction(require(cGame:GetService("ReplicatedStorage").Library.Client.Network).Invoke,function(self,...)
     	    if options.PetSim.Enabled and checkcaller() then
@@ -268,10 +268,10 @@ if hookfunction then
         end)
     	    end
 	oldd2=hookfunction(Instance.new("RemoteFunction").InvokeServer,newcclosure(function(self,...)
-		if game.PlaceId==1537690962 and options.BeeSwarm and self==hiv then
+		if cGame.PlaceId==1537690962 and options.BeeSwarm and self==hiv then
 			return options.Output("Script attempted to place a basic bee egg, potentially for a fake dupe. Attempt denied.")
 		end
-		if game.PlaceId==8737899170 and options.PetSim99 and self==bank99 and checkcaller() then
+		if cGame.PlaceId==8737899170 and options.PetSim99 and self==bank99 and checkcaller() then
 			return options.Output("Script attempted to access the bank. Attempt denied.")
 		end
 		return oldd2(self,...)
@@ -406,16 +406,16 @@ if hookmetamethod then
 			return true
 		end
 		if checkcaller() then
-			if game.PlaceId==9551640993 and options.MiningSim and self==tr and method=="FireServer" then
+			if cGame.PlaceId==9551640993 and options.MiningSim and self==tr and method=="FireServer" then
 				options.Output("Script attempted to confirm a potentially rigged/scam trade. Attempt denied.")
 				return
-			--[[elseif game.PlaceId==6284583030 and options.PetSim and self==bank and method=="InvokeServer" then
+			--[[elseif cGame.PlaceId==6284583030 and options.PetSim and self==bank and method=="InvokeServer" then
 				local args={...}
 				task.spawn(function()
 					options.Output(("Script attempted to give user named %s (ID: %s) access to your bank. Attempt denied."):format(Players:GetNameFromUserIdAsync(args[1][2]),args[1][2]))
 				end)
 				return ]]
-			elseif game.PlaceId==1537690962 and options.BeeSwarm and self==hiv and method=="InvokeServer" then
+			elseif cGame.PlaceId==1537690962 and options.BeeSwarm and self==hiv and method=="InvokeServer" then
 				options.Output("Script attempted to place a basic bee egg, potentially a fake dupe. Attempt denied.")
 				return
 			elseif cGame.PlaceId==8737899170 and options.PetSim99 and self==bank99 amd method=="InvokeServer" then
