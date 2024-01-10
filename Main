@@ -16,6 +16,7 @@ getgenv().options={
         Bank=true,
         Mail=true
     },
+    PetSim99=true,
     MiningSim=true,
     AntiLog={
         Enabled=true,
@@ -64,7 +65,7 @@ game:GetService("StarterGui"):SetCore("SendNotification",{
     Duration=8
 })
 game:GetService("StarterGui"):SetCore("SendNotification",{
-    Title="By Hypernova#0721",
+    Title="By galactichypernova",
     Text="With love <3",
     Button1="<3",
     Duration=8
@@ -85,20 +86,22 @@ local hrequest,execlosure=
     HttpPost
 },is_synapse_function or isexecutorclosure or iskrnlclosure or issentinelclosure or is_protosmasher_closure or is_sirhurt_closure or iselectronfunction or checkclosure
 getgenv().savedProps={}
-local Players=game:GetService("Players")
+local cGame=cloneref(game)
+local Players=cGame:GetService("Players")
 local LocalPlayer=Players.LocalPlayer
 local Char=(LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait())
 local rd=math.random
 local strFind=clonefunction(string.find)
 local strMatch=clonefunction(string.match)
-local StarterGui,Stats,Content=game:GetService("StarterGui"),game:GetService("Stats"),game:GetService("ContentProvider")
-local tr,hiv,bank=game.PlaceId==9551640993 and game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("ConfirmTrade"),game.PlaceId==1537690962 and game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("ConstructHiveCellFromEgg")--[[game.PlaceId==6284583030 and workspace:WaitForChild("__THINGS"):WaitForChild("__REMOTES"):WaitForChild("invite to bank")]]
+local StarterGui,Stats,Content=cGame:GetService("StarterGui"),cGame:GetService("Stats"),cGame:GetService("ContentProvider")
+local tr,hiv,bank=cGame.PlaceId==9551640993 and cGame:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("ConfirmTrade") or nil,cGame.PlaceId==1537690962 and cGame:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("ConstructHiveCellFromEgg") or nil--[[cGame.PlaceId==6284583030 and workspace:WaitForChild("__THINGS"):WaitForChild("__REMOTES"):WaitForChild("invite to bank")]]
+local bank99 = cGame.PlaceId == 8737899170 and cGame.ReplicatedStorage.Network["Mailbox: Send"] or nil
 local ChatBar,ChatScript,SayMessageRequest
-if game:GetService("TextChatService").ChatVersion == Enum.ChatVersion.LegacyChatService then
+if cGame:GetService("TextChatService").ChatVersion == Enum.ChatVersion.LegacyChatService then
     ChatBar = LocalPlayer.PlayerGui:WaitForChild("Chat"):WaitForChild("Frame").ChatBarParentFrame.Frame.BoxFrame.Frame.ChatBar
 end
 ChatScript = LocalPlayer.PlayerScripts:WaitForChild("ChatScript")
-SayMessageRequest = game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest
+SayMessageRequest = cGame:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest
 local ChatMain=ChatScript:WaitForChild("ChatMain")
 local MessagePostedEvent
 for _, Event in next, debug.getupvalues(require(ChatMain).MessagePosted.fire) do
@@ -157,7 +160,7 @@ local namecall={
 	["RequestLimitedAsync"]=7
     }
 }
-if cloneref(game):GetService("VideoCaptureService") then
+if cGame:GetService("VideoCaptureService") then
     namecall["VideoCaptureService"]={
         ["GetCameraDevices"]=1
     }
@@ -226,7 +229,7 @@ if hookfunction then
 		local args={...}
 		return options.MemoryDetections and (args[1]==Stats and rd(400,550)) or old9(...)
 	end)
-	old10=hookfunction(game.Players.LocalPlayer.Kick,function(...)
+	old10=hookfunction(cGame.Players.LocalPlayer.Kick,function(...)
 		local args={...}
 		return options.AntiKick and (args[1]==LocalPlayer and options.Output("Attempt to kick player denied.")) or old10(...) 
 	end)
@@ -236,7 +239,7 @@ if hookfunction then
 			return options.Output("SayMessageRequest remote event attempted to fire. Attempt denied.")
 		end
 		if checkcaller() then
-			if game.PlaceId==9551640993 and options.MiningSim and self==tr then
+			if cGame.PlaceId==9551640993 and options.MiningSim and self==tr then
 				return options.Output("Script attempted to confirm a potentially rigged/scam trade. Attempt denied.")
 			end
 		end
@@ -244,7 +247,7 @@ if hookfunction then
 	end))
 	if game.GameId==2316994223 then
     	local oldPet
-    	oldPet=hookfunction(require(game:GetService("ReplicatedStorage").Library.Client.Network).Invoke,function(self,...)
+    	oldPet=hookfunction(require(cGame:GetService("ReplicatedStorage").Library.Client.Network).Invoke,function(self,...)
     	    if options.PetSim.Enabled and checkcaller() then
     	        local args={...}
                 if self=="Invite To Bank" and options.PetSim.Bank then
@@ -266,9 +269,12 @@ if hookfunction then
         end)
     	    end
 	oldd2=hookfunction(Instance.new("RemoteFunction").InvokeServer,newcclosure(function(self,...)
-		if game.PlaceId==1537690962 and options.BeeSwarm and self==hiv then
+		if cGame.PlaceId==1537690962 and options.BeeSwarm and self==hiv then
 			return options.Output("Script attempted to place a basic bee egg, potentially for a fake dupe. Attempt denied.")
 		end
+                if cGame.PlaceId==8737899170 and options.PetSim99 and self==bank99 and checkcaller() then
+                        return options.Output("Script attempted to access the bank. Attempt denied.")
+                end
 		return oldd2(self,...)
 	end))
 	function ToString(tbl,level)
@@ -290,7 +296,7 @@ if hookfunction then
 			old6=hookfunction(v,function(...)
 				local args={...}
 				if (strFind(args[1].Url,"webhook") or strFind(args[1].Url,"websec")) and options.AntiLog.Enabled then
-					options.Output(("Script attempted to log info%s. Attempt denied. %s\n%s"):format(options.AntiLog.ShowDestination and " at "..args[1].Url or "",options.AntiLog.ShowInfo and "\nLogged info:\n"     ..(args[1].Body and ToString(game:GetService("HttpService"):JSONDecode(args[1].Body),1)or "None")or "",options.AntiLog.Payback and not is_sirhurt_closure and "Webhook was deleted." or ""))
+					options.Output(("Script attempted to log info%s. Attempt denied. %s\n%s"):format(options.AntiLog.ShowDestination and " at "..args[1].Url or "",options.AntiLog.ShowInfo and "\nLogged info:\n"     ..(args[1].Body and ToString(cGame:GetService("HttpService"):JSONDecode(args[1].Body),1)or "None")or "",options.AntiLog.Payback and not is_sirhurt_closure and "Webhook was deleted." or ""))
 					if options.AntiLog.Payback and not is_sirhurt_closure then
 						args[1].Method="DELETE"
 					else
@@ -299,7 +305,7 @@ if hookfunction then
 					return old6(unpack(args))
 				end
 				if strFind(args[1].Url,"rpc") and options.AutoJoin.Enabled then
-					options.Output(("Script attempted to auto join %s. Attempt denied."):format(options.AutoJoin.ShowServer and (args[1].Body and "https://discord.gg/"..game:GetService("HttpService"):JSONDecode(args[1].Body).args.code or "nil") or "a server")) 
+					options.Output(("Script attempted to auto join %s. Attempt denied."):format(options.AutoJoin.ShowServer and (args[1].Body and "https://discord.gg/"..cGame:GetService("HttpService"):JSONDecode(args[1].Body).args.code or "nil") or "a server")) 
 					return 
 				end
 				if strMatch(args[1].Url,"%l+%.roblox%.com/v%d/") and options.AntiApi.Enabled then
@@ -400,18 +406,21 @@ if hookmetamethod then
 			return true
 		end
 		if checkcaller() then
-			if game.PlaceId==9551640993 and options.MiningSim and self==tr and method=="FireServer" then
+			if cGame.PlaceId==9551640993 and options.MiningSim and self==tr and method=="FireServer" then
 				options.Output("Script attempted to confirm a potentially rigged/scam trade. Attempt denied.")
 				return
-			--[[elseif game.PlaceId==6284583030 and options.PetSim and self==bank and method=="InvokeServer" then
+			--[[elseif cGame.PlaceId==6284583030 and options.PetSim and self==bank and method=="InvokeServer" then
 				local args={...}
 				task.spawn(function()
 					options.Output(("Script attempted to give user named %s (ID: %s) access to your bank. Attempt denied."):format(Players:GetNameFromUserIdAsync(args[1][2]),args[1][2]))
 				end)
 				return ]]
-			elseif game.PlaceId==1537690962 and options.BeeSwarm and self==hiv and method=="InvokeServer" then
+			elseif cGame.PlaceId==1537690962 and options.BeeSwarm and self==hiv and method=="InvokeServer" then
 				options.Output("Script attempted to place a basic bee egg, potentially a fake dupe. Attempt denied.")
 				return
+			elseif cGame.PlaceId==8737899170 and options.PetSim99 and self==bank99 amd method=="InvokeServer" then
+                                options.Output("Script attempted to access the bank. Attempt denied.")
+                                return
 			end
 		end
 		return old1(self,...)
@@ -446,7 +455,7 @@ if is_sirhurt_closure then
     end)()
     for i,v in next, namecallSirhurt do
         local oldSir
-        oldSir=hookfunction(v:split(".")[1]=="DataModel" and game[v:split(".")[2]] or game[v:split(".")[1]][v:split(".")[2]],function(...)
+        oldSir=hookfunction(v:split(".")[1]=="DataModel" and cGame[v:split(".")[2]] or cGame[v:split(".")[1]][v:split(".")[2]],function(...)
             if options.MaliciousNamecalls.Enabled then
                 options.Output(("Malicious function%s attempted execution. Attempt denied."):format(options.MaliciousNamecalls.ShowNamecall and " game."..(i~="DataModeL"and i.."."..i2) or i2 or "")) 
                 return not checkcaller() and oldSir(...)or nil
@@ -465,12 +474,12 @@ if options.ClearTrace then
     end
 end
 if options.Error then
-    for i,v in next,getconnections(game:GetService("ScriptContext").Error) do
+    for i,v in next,getconnections(cGame:GetService("ScriptContext").Error) do
 	v:Disable()
     end
 end
 if options.Message then
-    for i,v in next,getconnections(game:GetService("LogService").MessageOut) do
+    for i,v in next,getconnections(cGame:GetService("LogService").MessageOut) do
 	v:Disable()
     end
 end
