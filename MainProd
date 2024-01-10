@@ -99,10 +99,11 @@ local ChatBar,ChatScript,SayMessageRequest
 if cGame:GetService("TextChatService").ChatVersion == Enum.ChatVersion.LegacyChatService then
     ChatBar = LocalPlayer.PlayerGui:WaitForChild("Chat"):WaitForChild("Frame").ChatBarParentFrame.Frame.BoxFrame.Frame.ChatBar
     ChatScript = LocalPlayer.PlayerScripts:WaitForChild("ChatScript")
+    SayMessageRequest = cGame:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest
+
 else
 	ChatScript = cGame.CoreGui.RobloxGui.Modules.Server.ClientChat.ChatScript
 end
-SayMessageRequest = cGame:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest
 local ChatMain=ChatScript:WaitForChild("ChatMain")
 local MessagePostedEvent
 for _, Event in next, debug.getupvalues(require(ChatMain).MessagePosted.fire) do
