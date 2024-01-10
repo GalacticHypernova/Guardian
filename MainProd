@@ -95,22 +95,22 @@ local strMatch=clonefunction(string.match)
 local StarterGui,Stats,Content=cGame:GetService("StarterGui"),cGame:GetService("Stats"),cGame:GetService("ContentProvider")
 local tr,hiv,bank=cGame.PlaceId==9551640993 and cGame:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("ConfirmTrade") or nil,cGame.PlaceId==1537690962 and cGame:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("ConstructHiveCellFromEgg") or nil--[[game.PlaceId==6284583030 and workspace:WaitForChild("__THINGS"):WaitForChild("__REMOTES"):WaitForChild("invite to bank")]]
 local bank99 = cGame.PlaceId == 8737899170 and cGame.ReplicatedStorage.Network["Mailbox: Send"] or nil
-local ChatBar,ChatScript,SayMessageRequest
+local ChatBar,ChatScript,SayMessageRequest, ChatMain, MessagePostedEvent
 if cGame:GetService("TextChatService").ChatVersion == Enum.ChatVersion.LegacyChatService then
     ChatBar = LocalPlayer.PlayerGui:WaitForChild("Chat"):WaitForChild("Frame").ChatBarParentFrame.Frame.BoxFrame.Frame.ChatBar
     ChatScript = LocalPlayer.PlayerScripts:WaitForChild("ChatScript")
     SayMessageRequest = cGame:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest
+    ChatMain=ChatScript:WaitForChild("ChatMain")
+	for _, Event in next, debug.getupvalues(require(ChatMain).MessagePosted.fire) do
+	    if typeof(Event) == "Instance" then
+	        MessagePostedEvent = Event
+	    end
+	end
 
 else
 	ChatScript = cGame.CoreGui.RobloxGui.Modules.Server.ClientChat.ChatScript
 end
-local ChatMain=ChatScript:WaitForChild("ChatMain")
-local MessagePostedEvent
-for _, Event in next, debug.getupvalues(require(ChatMain).MessagePosted.fire) do
-    if typeof(Event) == "Instance" then
-        MessagePostedEvent = Event
-    end
-end
+local 
 local namecall={
     ["BrowserService"]={
         ["OpenBrowserWindow"]=1,
