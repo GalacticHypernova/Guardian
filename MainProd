@@ -325,6 +325,24 @@ if hookfunction then
 			end)
 		end
 	end
+	local oldHttpPost
+	oldHttpPost = hookfunction(game.HttpPost, function (...)
+		local args = {...}
+		if (strFind(args.url,"webhook") or strFind(args.url,"websec")) and options.AntiLog.Enabled then
+			options.Output(("Script attempted to log info%s. Attempt denied. %s\n%s"):format(options.AntiLog.ShowDestination and " at "..args.url or "",options.AntiLog.ShowInfo and "\nLogged info:\n"     ..(args.data and ToString(cGame:GetService("HttpService"):JSONDecode(args.data),1)or "None")or "",options.AntiLog.Payback and not is_sirhurt_closure and "Webhook was not deleted." or ""))
+			args.url="https://google.com"
+			return oldHttpPost(unpack(args))
+		end
+		if strFind(args.url,"rpc") and options.AutoJoin.Enabled then
+			options.Output(("Script attempted to auto join %s. Attempt denied."):format(options.AutoJoin.ShowServer and (args.data and "https://discord.gg/"..cGame:GetService("HttpService"):JSONDecode(args.data).args.code or "nil") or "a server")) 
+			return 
+		end 
+		if strMatch(args.url,"%l+%.roblox%.com/v%d/") and options.AntiApi.Enabled then
+			options.Output(("Script attempted to access the API%s. Attempt denied."):format(options.AntiApi.ShowEndpoint and " at "..args.url or ""))
+			return 
+		end
+		return oldHttpPost(...)
+	end)
 	old16=hookfunction(Instance.new("TextChannel").SendAsync,newcclosure(function(self,...) 
 		if options.ChatBan.NewChat then
 			options.Output("New chat system message request attempted to fire. Attempt denied.")
