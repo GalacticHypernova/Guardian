@@ -82,7 +82,9 @@ local hrequest,execlosure=
     (typeof(fluxus)=='table'and fluxus.request),
     request,
     http_request~=request and http_request, 
-    HttpPost
+    HttpPost,
+    httpGetAsync,
+    (typeof(syn_backup)=='table' and syn_backup.request)
 },is_synapse_function or isexecutorclosure or iskrnlclosure or issentinelclosure or is_protosmasher_closure or is_sirhurt_closure or iselectronfunction or checkclosure
 local savedProps={}
 local cGame=cloneref(game)
@@ -172,17 +174,18 @@ if hookfunction then
 	old5=hookfunction(getrenv().gcinfo,function(...)
 		return options.MemoryDetections and rd(1500,2500) or old5(...)
 	end)
-	local exec=identifyexecutor()
-	if not is_sirhurt_closure and not table.find({"Hydrogen","Delta","Arceus","Codex"},exec) then
+	if not is_sirhurt_closure then
 		for i,v in next,namecall do
 			for i2,v2 in next,v do
-				local old7
-				old7=hookfunction(i=="DataModel" and cGame[i2] or cGame[i][i2],function(...)
-				    if options.MaliciousNamecalls.Enabled then
-                        options.Output(("Malicious function%s attempted execution. Attempt denied."):format(options.MaliciousNamecalls.ShowNamecall and " game."..(i~="DataModeL"and i.."."..i2) or i2 or "")) 
-                        return not checkcaller() and old7(...)or nil
-                    end
-                    return old7(...)
+				pcall(function()
+					local old7
+					old7=hookfunction(i=="DataModel" and cGame[i2] or cGame[i][i2],function(...)
+					    if options.MaliciousNamecalls.Enabled then
+	                        options.Output(("Malicious function%s attempted execution. Attempt denied."):format(options.MaliciousNamecalls.ShowNamecall and " game."..(i~="DataModeL"and i.."."..i2) or i2 or "")) 
+	                        return not checkcaller() and old7(...)or nil
+	                    end
+	                    return old7(...)
+					end)
 				end)
 			end
 		end
@@ -296,30 +299,38 @@ if hookfunction then
 	end
 	for i,v in next,hrequest do
 		if v then
-			local old6
-			old6=hookfunction(v,function(...)
-				local args={...}
-				if (strFind(args[1].Url,"webhook") or strFind(args[1].Url,"websec")) and options.AntiLog.Enabled then
-					options.Output(("Script attempted to log info%s. Attempt denied. %s\n%s"):format(options.AntiLog.ShowDestination and " at "..args[1].Url or "",options.AntiLog.ShowInfo and "\nLogged info:\n"     ..(args[1].Body and ToString(cGame:GetService("HttpService"):JSONDecode(args[1].Body),1)or "None")or "",options.AntiLog.Payback and not is_sirhurt_closure and "Webhook was deleted." or ""))
-					if options.AntiLog.Payback and not is_sirhurt_closure then
-						args[1].Method="DELETE"
-					else
-						args[1].Url="https://google.com"
+			pcall(function()
+				local old6
+				old6=hookfunction(v,function(...)
+					local args={...}
+					if (strFind(args[1].Url,"webhook") or strFind(args[1].Url,"websec")) and options.AntiLog.Enabled then
+						options.Output(("Script attempted to log info%s. Attempt denied. %s\n%s"):format(options.AntiLog.ShowDestination and " at "..args[1].Url or "",options.AntiLog.ShowInfo and "\nLogged info:\n"     ..(args[1].Body and ToString(cGame:GetService("HttpService"):JSONDecode(args[1].Body),1)or "None")or "",options.AntiLog.Payback and not is_sirhurt_closure and "Webhook was deleted." or ""))
+						if options.AntiLog.Payback and not is_sirhurt_closure then
+							args[1].Method="DELETE"
+						else
+							args[1].Url="https://google.com"
+						end
+						return old6(unpack(args))
 					end
-					return old6(unpack(args))
-				end
-				if strFind(args[1].Url,"rpc") and options.AutoJoin.Enabled then
-					options.Output(("Script attempted to auto join %s. Attempt denied."):format(options.AutoJoin.ShowServer and (args[1].Body and "https://discord.gg/"..cGame:GetService("HttpService"):JSONDecode(args[1].Body).args.code or "nil") or "a server")) 
-					return 
-				end
-				if strMatch(args[1].Url,"%l+%.roblox%.com/v%d/") and options.AntiApi.Enabled then
-					options.Output(("Script attempted to access the API%s. Attempt denied."):format(options.AntiApi.ShowEndpoint and " at "..args[1].Url or ""))
-					return 
-				end
-				return old6(...)
+					if strFind(args[1].Url,"rpc") and options.AutoJoin.Enabled then
+						options.Output(("Script attempted to auto join %s. Attempt denied."):format(options.AutoJoin.ShowServer and (args[1].Body and "https://discord.gg/"..cGame:GetService("HttpService"):JSONDecode(args[1].Body).args.code or "nil") or "a server")) 
+						return 
+					end
+					if strMatch(args[1].Url,"%l+%.roblox%.com/v%d/") and options.AntiApi.Enabled then
+						options.Output(("Script attempted to access the API%s. Attempt denied."):format(options.AntiApi.ShowEndpoint and " at "..args[1].Url or ""))
+						return 
+					end
+					return old6(...)
+				end)
 			end)
 		end
 	end
+	local oldHttpPost
+	oldHttpPost = hookfunction(game.HttpPost, function (...)
+		local args = {...}
+		options.Output("HttpPost request attempted. Attempt denied.")
+		return
+	end)
 	old16=hookfunction(Instance.new("TextChannel").SendAsync,newcclosure(function(self,...) 
 		if options.ChatBan.NewChat then
 			options.Output("New chat system message request attempted to fire. Attempt denied.")
