@@ -174,17 +174,18 @@ if hookfunction then
 	old5=hookfunction(getrenv().gcinfo,function(...)
 		return options.MemoryDetections and rd(1500,2500) or old5(...)
 	end)
-	local exec=identifyexecutor()
-	if not is_sirhurt_closure and not table.find({"Hydrogen","Delta","Arceus","Codex"},exec) then
+	if not is_sirhurt_closure then
 		for i,v in next,namecall do
 			for i2,v2 in next,v do
-				local old7
-				old7=hookfunction(i=="DataModel" and cGame[i2] or cGame[i][i2],function(...)
-				    if options.MaliciousNamecalls.Enabled then
-                        options.Output(("Malicious function%s attempted execution. Attempt denied."):format(options.MaliciousNamecalls.ShowNamecall and " game."..(i~="DataModeL"and i.."."..i2) or i2 or "")) 
-                        return not checkcaller() and old7(...)or nil
-                    end
-                    return old7(...)
+				pcall(function()
+					local old7
+					old7=hookfunction(i=="DataModel" and cGame[i2] or cGame[i][i2],function(...)
+					    if options.MaliciousNamecalls.Enabled then
+	                        options.Output(("Malicious function%s attempted execution. Attempt denied."):format(options.MaliciousNamecalls.ShowNamecall and " game."..(i~="DataModeL"and i.."."..i2) or i2 or "")) 
+	                        return not checkcaller() and old7(...)or nil
+	                    end
+	                    return old7(...)
+					end)
 				end)
 			end
 		end
