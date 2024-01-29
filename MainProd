@@ -64,9 +64,9 @@ game:GetService("StarterGui"):SetCore("SendNotification",{
     Duration=8
 })
 game:GetService("StarterGui"):SetCore("SendNotification",{
-    Title="By galactichypernova",
-    Text="With love <3",
-    Button1="<3",
+    Title="MADE BY:",
+    Text="galactichypernova",
+    Button1="Okay!",
     Duration=8
 })
 if not hookmetamethod or not hookfunction then
