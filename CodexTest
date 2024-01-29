@@ -325,12 +325,14 @@ if hookfunction then
 			end)
 		end
 	end
+        pcall(function()
 	local oldHttpPost
 	oldHttpPost = hookfunction(game.HttpPost, function (...)
 		local args = {...}
 		options.Output("HttpPost request attempted. Attempt denied.")
 		return
 	end)
+        end)
 	old16=hookfunction(Instance.new("TextChannel").SendAsync,newcclosure(function(self,...) 
 		if options.ChatBan.NewChat then
 			options.Output("New chat system message request attempted to fire. Attempt denied.")
