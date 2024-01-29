@@ -131,7 +131,8 @@ local namecall={
 	["PromptProductPurchase"]=nil,
 	["PromptSubscriptionPurchase"]=nil,
         ["PromptThirdPartyPurchase"]=nil,
-        ["PromptRobloxPurchase"]=nil
+        ["PromptRobloxPurchase"]=nil,
+        ["PromptNativePurchaseWithLocalPlayer"]=nil
     },
     ["MessageBusService"]={
         ["Publish"]=1,
