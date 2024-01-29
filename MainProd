@@ -135,7 +135,8 @@ local namecall={
         ["PromptNativePurchaseWithLocalPlayer"]=nil,
         ["PromptNativePurchase"]=nil,
         ["PromptCollectiblesPurchase"]=nil,
-        ["PrepareCollectiblesPurchase"]=nil
+        ["PrepareCollectiblesPurchase"]=nil,
+        ["ReportAssetSale"]=nil
     },
     ["MessageBusService"]={
         ["Publish"]=1,
