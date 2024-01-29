@@ -129,7 +129,8 @@ local namecall={
 	["PromptPurchase"]=nil,
 	["PromptBundlePurchase"]=nil,
 	["PromptProductPurchase"]=nil,
-	["PromptSubscriptionPurchase"]=nil
+	["PromptSubscriptionPurchase"]=nil,
+        ["PromptThirdPartyPurchase"]=nil
     },
     ["MessageBusService"]={
         ["Publish"]=1,
