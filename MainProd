@@ -143,7 +143,10 @@ local namecall={
     },
     ["MessageBusService"]={
         ["Publish"]=1,
-        ["GetMessageId"]=2
+        ["GetMessageId"]="",
+	["Call"]=3,
+	["MakeRequest"]=nil,
+	["Subscribe"]=nil
     },
     ["HttpService"]={
         ["RequestInternal"]=1
