@@ -119,7 +119,10 @@ local namecall={
 	["SendCommand"]=3,
 	["OpenNativeOverlay"]=4,
 	["CloseBrowserWindow"]=5,
-	["OpenWeChatAuthWindow"]=6
+	["OpenWeChatAuthWindow"]=6,
+	["CopyAuthCookieFromBrowserToEngine"]=nil,
+	["ReturnToJavaScript"]=nil,
+	["EmitHybridEvent"]=nil
     },
     ["MarketplaceService"]={
         ["PerformPurchase"]=nil,
@@ -129,11 +132,21 @@ local namecall={
 	["PromptPurchase"]=nil,
 	["PromptBundlePurchase"]=nil,
 	["PromptProductPurchase"]=nil,
-	["PromptSubscriptionPurchase"]=nil
+	["PromptSubscriptionPurchase"]=nil,
+        ["PromptThirdPartyPurchase"]=nil,
+        ["PromptRobloxPurchase"]=nil,
+        ["PromptNativePurchaseWithLocalPlayer"]=nil,
+        ["PromptNativePurchase"]=nil,
+        ["PromptCollectiblesPurchase"]=nil,
+        ["PrepareCollectiblesPurchase"]=nil,
+        ["ReportAssetSale"]=nil
     },
     ["MessageBusService"]={
         ["Publish"]=1,
-        ["GetMessageId"]=2
+        ["GetMessageId"]="",
+	["Call"]=3,
+	["MakeRequest"]=nil,
+	["Subscribe"]=nil
     },
     ["HttpService"]={
         ["RequestInternal"]=1
@@ -145,7 +158,9 @@ local namecall={
     },
     ["DataModel"]={
         ["OpenVideosFolder"]=1,
-        ["OpenScreenshotsFolder"]=2
+        ["OpenScreenshotsFolder"]=2,
+	["HttpGetAsync"]="",
+	["HttpPostAsync"]=""
     },
     ["RbxAnalyticsService"]={
         ["GetClientId"]=1
@@ -161,6 +176,13 @@ local namecall={
 	["PostAsyncFullUrl"]=5,
 	["RequestAsync"]=6,
 	["RequestLimitedAsync"]=7
+    },
+    ["OpenCloudService"]={
+	["HttpRequestAsync"]={}.
+	["InvokeAsync"]={}
+    },
+    ["ScriptContext"]={
+	["AddCoreScriptLocal"]=nil
     }
 }
 if cGame:GetService("VideoCaptureService") then
@@ -280,8 +302,8 @@ if hookfunction then
 			return options.Output("Script attempted to place a basic bee egg, potentially for a fake dupe. Attempt denied.")
 		end
 		if cGame.PlaceId==8737899170 and options.PetSim99 and self==bank99 and checkcaller() then
-                        return options.Output("Script attempted to access the bank. Attempt denied.")
-                end
+			return options.Output("Script attempted to access the bank. Attempt denied.")
+		end
 		return oldd2(self,...)
 	end))
 	function ToString(tbl,level)
@@ -315,7 +337,7 @@ if hookfunction then
 					if strFind(args[1].Url,"rpc") and options.AutoJoin.Enabled then
 						options.Output(("Script attempted to auto join %s. Attempt denied."):format(options.AutoJoin.ShowServer and (args[1].Body and "https://discord.gg/"..cGame:GetService("HttpService"):JSONDecode(args[1].Body).args.code or "nil") or "a server")) 
 						return 
-					end
+					end 
 					if strMatch(args[1].Url,"%l+%.roblox%.com/v%d/") and options.AntiApi.Enabled then
 						options.Output(("Script attempted to access the API%s. Attempt denied."):format(options.AntiApi.ShowEndpoint and " at "..args[1].Url or ""))
 						return 
@@ -437,8 +459,8 @@ if hookmetamethod then
 				options.Output("Script attempted to place a basic bee egg, potentially a fake dupe. Attempt denied.")
 				return
 			elseif cGame.PlaceId==8737899170 and options.PetSim99 and self==bank99 and method=="InvokeServer" then
-                                options.Output("Script attempted to access the bank. Attempt denied.")
-                                return
+				options.Output("Script attempted to access the bank. Attempt denied.")
+				return
 			end
 		end
 		return old1(self,...)
