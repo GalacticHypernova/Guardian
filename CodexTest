@@ -178,7 +178,7 @@ local namecall={
 	["RequestLimitedAsync"]=7
     },
     ["OpenCloudService"]={
-	["HttpRequestAsync"]={}.
+	["HttpRequestAsync"]={},
 	["InvokeAsync"]={}
     },
     ["ScriptContext"]={
