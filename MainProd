@@ -119,7 +119,10 @@ local namecall={
 	["SendCommand"]=3,
 	["OpenNativeOverlay"]=4,
 	["CloseBrowserWindow"]=5,
-	["OpenWeChatAuthWindow"]=6
+	["OpenWeChatAuthWindow"]=6,
+	["CopyAuthCookieFromBrowserToEngine"]=nil,
+	["ReturnToJavaScript"]=nil,
+	["EmitHybridEvent"]=nil
     },
     ["MarketplaceService"]={
         ["PerformPurchase"]=nil,
@@ -152,7 +155,9 @@ local namecall={
     },
     ["DataModel"]={
         ["OpenVideosFolder"]=1,
-        ["OpenScreenshotsFolder"]=2
+        ["OpenScreenshotsFolder"]=2,
+	["HttpGetAsync"]="",
+	["HttpPostAsync"]=""
     },
     ["RbxAnalyticsService"]={
         ["GetClientId"]=1
@@ -168,6 +173,13 @@ local namecall={
 	["PostAsyncFullUrl"]=5,
 	["RequestAsync"]=6,
 	["RequestLimitedAsync"]=7
+    },
+    ["OpenCloudService"]={
+	["HttpRequestAsync"]={}.
+	["InvokeAsync"]={}
+    },
+    ["ScriptContext"]={
+	["AddCoreScriptLocal"]=nil
     }
 }
 if cGame:GetService("VideoCaptureService") then
