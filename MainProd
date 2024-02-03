@@ -149,7 +149,8 @@ local namecall={
 	["Subscribe"]=nil
     },
     ["HttpService"]={
-        ["RequestInternal"]=1
+        ["RequestInternal"]=1,
+	["GetSecret"]=nil
     },
     ["GuiService"]={
         ["OpenBrowserWindow"]=1,
@@ -183,13 +184,29 @@ local namecall={
     },
     ["ScriptContext"]={
 	["AddCoreScriptLocal"]=nil
+    },
+    ["VideoCaptureService"]={
+        ["GetCameraDevices"]={}
+    },
+    ["CaptureService"]={
+	["DeleteCapture"]=nil,
+	["PromptSaveCapturesToGallery"]=nil,
+	["PromptShareCapture"]=nil,
+	["RetrieveCaptures"]={},
+	["SaveCaptureToExternalStorage"]=nil,
+	["SaveScreenshotCapture"]=nil
+    },
+    ["SafetyService"]={
+    	["TakeScreenshot"]=0
+    },
+    ["LoginService"]={
+	["PromptLogin"]=nil,
+	["Logout"]=nil
+    },
+    ["PermissionsService"]={
+	["SetPermissions"]=nil
     }
 }
-if cGame:GetService("VideoCaptureService") then
-    namecall["VideoCaptureService"]={
-        ["GetCameraDevices"]=1
-    }
-end
 local c
 local old1,old2,old3,old4,old5,old8,old9,old10,old11,old12,old13,old14,old15,old16
 if hookfunction then
