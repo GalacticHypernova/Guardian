@@ -230,7 +230,13 @@ if hookfunction then
 		end
 	end
 	old13=hookfunction(Instance.new("BindableEvent").Fire,function(...)
-		return not options.ChatBan.Enabled and old13(...) or self==MessagePostedEvent and options.Output("MessagePosted usage was attempted. Attempt denied.") or old13(...)
+		if not options.ChatBan.Enabled then
+			return old13(...)
+		end
+		if self==MessagePostedEvent then
+			return options.Output("MessagePosted usage was attempted. Attempt denied.")
+		end
+		return old13(...)
 	end)
 	if ChatBar then
 		old12=hookfunction(ChatBar.CaptureFocus,function(...)
@@ -269,15 +275,24 @@ if hookfunction then
 	end
 	old8=hookfunction(Content.PreloadAsync,function(...)
 		local args={...}
-		return options.GUIDetection and (args[1]==Content and typeof(args[2])=="table" and options.Output("GUI detection attempted. Attempt denied.")) or old8(...) 
+		if options.GUIDetection and args[1]==Content and typeof(args[2])=="table" then
+			return options.Output("GUI detection attempted. Attempt denied.")
+		end
+		return old8(...) 
 	end)
 	old9=hookfunction(Stats.GetTotalMemoryUsageMb,function(...)
 		local args={...}
-		return options.MemoryDetections and (args[1]==Stats and rd(400,550)) or old9(...)
+		if options.MemoryDetections and (args[1]==Stats then
+			return rd(400,550)
+		end
+		return old9(...)
 	end)
 	old10=hookfunction(cGame.Players.LocalPlayer.Kick,function(...)
 		local args={...}
-		return options.AntiKick and (args[1]==LocalPlayer and options.Output("Attempt to kick player denied.")) or old10(...) 
+		if options.AntiKick and args[1]==LocalPlayer then
+			return options.Output("Attempt to kick player denied.")
+		end
+		return old10(...) 
 	end)
 	local oldd,oldd2
 	oldd=hookfunction(Instance.new("RemoteEvent").FireServer,newcclosure(function(self,...)
@@ -444,7 +459,7 @@ if hookmetamethod then
 		namecall[self.ClassName][method] and options.MaliciousNamecalls.Enabled
 		then
 			options.Output(("Malicious namecall%s attempted execution. Attempt denied."):format(options.MaliciousNamecalls.ShowNamecall and " game."..self.GetFullName(self)..":"..method or ""))
-			return not checkcaller() and old1(...)or nil
+			return not checkcaller() and old1(...) or nil
 		end
 		--[[if not checkcaller() and method=="DistanceFromCharacter" and self==LocalPlayer and typeof(args[1])=="Vector3" and options.BasicAntiCheatBypass then
 			return old1(self,...)<savedProps.WalkSpeed and old1(self,...) or rd(0,savedProps.WalkSpeed)
@@ -493,8 +508,9 @@ if hookmetamethod then
 			end
 		end
 		old2=hookmetamethod(game,"__index",newcclosure(function(self,b,...)
-			if not checkcaller() and rawget(savedProps,self) and rawget(rawget(savedProps,self),b) and rawget(options,"BasicAntiCheatBypass") then
-				return rawget(rawget(savedProps,self),b)
+			local prop = rawget(rawget(savedProps,self),b)
+			if not checkcaller() and rawget(savedProps,self) and prop and rawget(options,"BasicAntiCheatBypass") then
+				return prop
 			end
 			return old2(self,b,...)
 		end))
