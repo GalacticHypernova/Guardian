@@ -282,10 +282,7 @@ if hookfunction then
 	end)
 	old9=hookfunction(Stats.GetTotalMemoryUsageMb,function(...)
 		local args={...}
-		if options.MemoryDetections and (args[1]==Stats then
-			return rd(400,550)
-		end
-		return old9(...)
+		return options.MemoryDetections and (args[1]==Stats and rd(400,500)) or old9(...)
 	end)
 	old10=hookfunction(cGame.Players.LocalPlayer.Kick,function(...)
 		local args={...}
