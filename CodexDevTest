@@ -223,14 +223,12 @@ if hookfunction then
     	    if options.PetSim.Enabled and checkcaller() then
     	        local args={...}
                 if self=="Invite To Bank" and options.PetSim.Bank then
-                    for i,v in next,args do print(i,v)end
-        			task.spawn(function()
-        				options.Output(("Script attempted to give user%saccess to your bank. Attempt denied."):format(options.PetSim.ShowUser and " named ".. Players:GetNameFromUserIdAsync(args[2]).." (ID: "..args[2]..") " or " "))
-        			end)
-        			return
+        	    task.spawn(function()
+        		options.Output(("Script attempted to give user%saccess to your bank. Attempt denied."):format(options.PetSim.ShowUser and " named ".. Players:GetNameFromUserIdAsync(args[2]).." (ID: "..args[2]..") " or " "))
+        	    end)
+        	    return
                 end
                 if self=="Send Mail" and options.PetSim.Mail then
-                    for i,v in next,args do print(i,v)end
                     task.spawn(function()
                         options.Output(("Script attempted to send mail to a user%s. Attempt denied."):format(options.PetSim.ShowUser and " named ".. args[1]["Recipient"].." (ID: "..Players:GetUserIdFromNameAsync(args[1]["Recipient"])..") " or ""))
                     end)
