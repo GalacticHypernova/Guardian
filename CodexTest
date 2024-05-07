@@ -491,8 +491,10 @@ if hookmetamethod then
 			end
 		end
 		old2=hookmetamethod(game,"__index",newcclosure(function(self,b,...)
-			if not checkcaller() and rawget(savedProps,self) and rawget(rawget(savedProps,self),b) and rawget(options,"BasicAntiCheatBypass") then
-				return rawget(rawget(savedProps,self),b)
+			local outerProp = rawget(savedProps,self)
+			local prop = rawget(outerProp,b)
+			if not checkcaller() and outerProp and prop and rawget(options,"BasicAntiCheatBypass") then
+				return prop
 			end
 			return old2(self,b,...)
 		end))
