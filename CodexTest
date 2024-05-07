@@ -230,7 +230,13 @@ if hookfunction then
 		end
 	end
 	old13=hookfunction(Instance.new("BindableEvent").Fire,function(...)
-		return not options.ChatBan.Enabled and old13(...) or self==MessagePostedEvent and options.Output("MessagePosted usage was attempted. Attempt denied.") or old13(...)
+		if not options.ChatBan.Enabled then
+			return old13(...)
+		end
+		if self==MessagePostedEvent then
+			return options.Output("MessagePosted usage was attempted. Attempt denied.")
+		end
+		return old13(...)
 	end)
 	if ChatBar then
 		old12=hookfunction(ChatBar.CaptureFocus,function(...)
