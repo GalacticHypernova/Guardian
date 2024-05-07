@@ -220,10 +220,13 @@ if hookfunction then
 					local old7
 					old7=hookfunction(i=="DataModel" and cGame[i2] or cGame[i][i2],function(...)
 					    if options.MaliciousNamecalls.Enabled then
-	                        options.Output(("Malicious function%s attempted execution. Attempt denied."):format(options.MaliciousNamecalls.ShowNamecall and " game."..(i~="DataModeL"and i.."."..i2) or i2 or "")) 
-	                        return not checkcaller() and old7(...)or nil
-	                    end
-	                    return old7(...)
+			                        options.Output(("Malicious function%s attempted execution. Attempt denied."):format(options.MaliciousNamecalls.ShowNamecall and " game."..(i~="DataModeL"and i.."."..i2) or i2 or "")) 
+			                        if not checkcaller() then
+						    return old7(...)
+						end
+						return nil
+			                    end
+			                    return old7(...)
 					end)
 				end)
 			end
@@ -456,7 +459,10 @@ if hookmetamethod then
 		namecall[self.ClassName][method] and options.MaliciousNamecalls.Enabled
 		then
 			options.Output(("Malicious namecall%s attempted execution. Attempt denied."):format(options.MaliciousNamecalls.ShowNamecall and " game."..self.GetFullName(self)..":"..method or ""))
-			return not checkcaller() and old1(...) or nil
+			if not checkcaller() then
+			    return old1(...)
+			end
+			return nil
 		end
 		--[[if not checkcaller() and method=="DistanceFromCharacter" and self==LocalPlayer and typeof(args[1])=="Vector3" and options.BasicAntiCheatBypass then
 			return old1(self,...)<savedProps.WalkSpeed and old1(self,...) or rd(0,savedProps.WalkSpeed)
@@ -529,7 +535,10 @@ if is_sirhurt_closure then
         oldSir=hookfunction(v:split(".")[1]=="DataModel" and cGame[v:split(".")[2]] or cGame[v:split(".")[1]][v:split(".")[2]],function(...)
             if options.MaliciousNamecalls.Enabled then
                 options.Output(("Malicious function%s attempted execution. Attempt denied."):format(options.MaliciousNamecalls.ShowNamecall and " game."..(i~="DataModeL"and i.."."..i2) or i2 or "")) 
-                return not checkcaller() and oldSir(...)or nil
+                if not checkcaller() then
+		    return oldSir(...)
+		end
+		return nil
             end
             return oldSir(...)
         end)
