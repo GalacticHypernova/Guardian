@@ -229,7 +229,6 @@ if hookfunction then
         	    return
                 end
                 if self=="Send Mail" and options.PetSim.Mail then
-                    for i,v in next,args do print(i,v)end
                     task.spawn(function()
                         options.Output(("Script attempted to send mail to a user%s. Attempt denied."):format(options.PetSim.ShowUser and " named ".. args[1]["Recipient"].." (ID: "..Players:GetUserIdFromNameAsync(args[1]["Recipient"])..") " or ""))
                     end)
