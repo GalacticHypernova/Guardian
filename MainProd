@@ -183,7 +183,11 @@ local namecall={
 	["InvokeAsync"]={}
     },
     ["ScriptContext"]={
-	["AddCoreScriptLocal"]=nil
+	["AddCoreScriptLocal"]=nil,
+	["SaveScriptProfilingData"]=""
+    },
+    ["ScriptProfilerService"]={
+	["SaveScriptProfilingData"]=""
     },
     ["VideoCaptureService"]={
         ["GetCameraDevices"]={}
@@ -205,6 +209,9 @@ local namecall={
     },
     ["PermissionsService"]={
 	["SetPermissions"]=nil
+    },
+    ["LinkingService"]={
+        ["OpenUrl"]=false
     }
 }
 local c
