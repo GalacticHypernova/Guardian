@@ -87,6 +87,8 @@ local hrequest,execlosure=
     (typeof(syn_backup)=='table' and syn_backup.request)
 },is_synapse_function or isexecutorclosure or iskrnlclosure or issentinelclosure or is_protosmasher_closure or is_sirhurt_closure or iselectronfunction or checkclosure
 local savedProps={}
+local cloneref=cloneref or function(...)return ... end
+local clonefunction=clonefunction or function(...)return ... end
 local cGame=cloneref(game)
 local Players=cGame:GetService("Players")
 local LocalPlayer=Players.LocalPlayer
@@ -94,6 +96,7 @@ local Char=(LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait())
 local rd=math.random
 local strFind=clonefunction(string.find)
 local strMatch=clonefunction(string.match)
+local typeF=clonefunction(type)
 local StarterGui,Stats,Content=cGame:GetService("StarterGui"),cGame:GetService("Stats"),cGame:GetService("ContentProvider")
 local tr,hiv,bank=cGame.PlaceId==9551640993 and cGame:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("ConfirmTrade") or nil,cGame.PlaceId==1537690962 and cGame:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("ConstructHiveCellFromEgg") or nil--[[game.PlaceId==6284583030 and workspace:WaitForChild("__THINGS"):WaitForChild("__REMOTES"):WaitForChild("invite to bank")]]
 local bank99 = cGame.PlaceId == 8737899170 and cGame.ReplicatedStorage.Network["Mailbox: Send"] or nil
@@ -215,8 +218,15 @@ local namecall={
     }
 }
 local c
-local old1,old2,old3,old4,old5,old8,old9,old10,old11,old12,old13,old14,old15,old16
+local old1,old2,old3,old4,old5,old8,old9,old10,old11,old12,old13,old14,old15,old16,old17
 if hookfunction then
+        old17=hookfunction(restorefunction,function(...)
+                if typeF(...) == "function" then
+                        return ...
+                else
+                        return error("macarena")
+                end
+        end)
 	old5=hookfunction(getrenv().gcinfo,function(...)
 		return options.MemoryDetections and rd(1500,2500) or old5(...)
 	end)
